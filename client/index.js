@@ -8,7 +8,8 @@ if (typeof __resourceQuery === "string" && __resourceQuery) {
 } else {
 	// Else, get the url from the <script> this file was called with.
 	var scriptElements = document.getElementsByTagName("script");
-	var scriptHost = scriptElements[scriptElements.length-1].getAttribute("src").replace(/\/[^\/]+$/, "");
+	var scriptHost = scriptElements[scriptElements.length-1].getAttribute("src");
+	scriptHost = scriptHost && scriptHost.replace(/\/[^\/]+$/, "");
 	urlParts = url.parse((scriptHost ? scriptHost : "/"), false, true);
 }
 
@@ -54,16 +55,15 @@ var onSocketMsg = {
 		for(var i = 0; i < errors.length; i++)
 			console.error(stripAnsi(errors[i]));
 		if(initial) return initial = false;
-		reloadApp();
 	}
 };
 
 var newConnection = function() {
 	sock = new SockJS(url.format({
-		protocol: urlParts.protocol,
+		protocol: (window.location.protocol === "https:" || urlParts.hostname === '0.0.0.0') ? window.location.protocol : urlParts.protocol,
 		auth: urlParts.auth,
 		hostname: (urlParts.hostname === '0.0.0.0') ? window.location.hostname : urlParts.hostname,
-		port: (urlParts.port == '0') ? window.location.port : urlParts.port,
+		port: (urlParts.port === '0') ? window.location.port : urlParts.port,
 		pathname: urlParts.path == null || urlParts.path === '/' ? "/sockjs-node" : urlParts.path
 	}));
 
