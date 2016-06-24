@@ -1,17 +1,15 @@
 var url = require('url');
 var SockJS = require("sockjs-client");
 var stripAnsi = require('strip-ansi');
-var urlParts;
-if (typeof __resourceQuery === "string" && __resourceQuery) {
-	// If this bundle is inlined, use the resource query to get the correct url.
-	urlParts = url.parse(__resourceQuery.substr(1));
-} else {
-	// Else, get the url from the <script> this file was called with.
-	var scriptElements = document.getElementsByTagName("script");
-	var scriptHost = scriptElements[scriptElements.length-1].getAttribute("src");
-	scriptHost = scriptHost && scriptHost.replace(/\/[^\/]+$/, "");
-	urlParts = url.parse((scriptHost ? scriptHost : "/"), false, true);
-}
+var scriptElements = document.getElementsByTagName("script");
+var scriptHost = scriptElements[scriptElements.length-1].getAttribute("src").replace(/\/[^\/]+$/, "");
+
+// If this bundle is inlined, use the resource query to get the correct url.
+// Else, get the url from the <script> this file was called with.
+var urlParts = url.parse(typeof __resourceQuery === "string" && __resourceQuery ?
+	__resourceQuery.substr(1) :
+	(scriptHost ? scriptHost : "/")
+);
 
 var sock = null;
 var hot = false;
@@ -55,16 +53,17 @@ var onSocketMsg = {
 		for(var i = 0; i < errors.length; i++)
 			console.error(stripAnsi(errors[i]));
 		if(initial) return initial = false;
+		reloadApp();
 	}
 };
 
 var newConnection = function() {
 	sock = new SockJS(url.format({
-		protocol: (window.location.protocol === "https:" || urlParts.hostname === '0.0.0.0') ? window.location.protocol : urlParts.protocol,
+		protocol: urlParts.protocol,
 		auth: urlParts.auth,
 		hostname: (urlParts.hostname === '0.0.0.0') ? window.location.hostname : urlParts.hostname,
-		port: (urlParts.port === '0') ? window.location.port : urlParts.port,
-		pathname: urlParts.path == null || urlParts.path === '/' ? "/sockjs-node" : urlParts.path
+		port: urlParts.port,
+		pathname: urlParts.path === '/' ? "/sockjs-node" : urlParts.path
 	}));
 
 	sock.onclose = function() {
@@ -89,12 +88,7 @@ newConnection();
 function reloadApp() {
 	if(hot) {
 		console.log("[WDS] App hot update...");
-		var hotEmitter = require("webpack/hot/emitter");
-		hotEmitter.emit("webpackHotUpdate", currentHash);
-		if(typeof window !== "undefined") {
-			// broadcast update to window
-			window.postMessage("webpackHotUpdate" + currentHash, "*");
-		}
+		window.postMessage("webpackHotUpdate" + currentHash, "*");
 	} else {
 		console.log("[WDS] App updated. Reloading...");
 		window.location.reload();
