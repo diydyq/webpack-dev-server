@@ -1,6 +1,6 @@
 {
   "name": "webpack-dev-server_custom_proxy",
-  "version": "1.14.1",
+  "version": "0.0.1",
   "author": {
     "name": "diydyq@126.com"
   },
@@ -34,7 +34,6 @@
     "webpack": "^1.12.1"
   },
   "license": "MIT",
-  "homepage": "http://github.com/webpack/webpack-dev-server",
   "main": "lib/Server.js",
   "bin": {
     "webpack-dev-server": "bin/webpack-dev-server.js"
