@@ -1,8 +1,8 @@
 {
-  "name": "webpack-dev-server",
+  "name": "webpack-dev-server_custom_proxy",
   "version": "1.14.1",
   "author": {
-    "name": "Tobias Koppers @sokra"
+    "name": "diydyq@126.com"
   },
   "description": "Serves a webpack app. Updates the browser on changes.",
   "peerDependencies": {
