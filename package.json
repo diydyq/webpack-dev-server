@@ -34,10 +34,6 @@
     "webpack": "^1.12.1"
   },
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/webpack/webpack-dev-server.git"
-  },
   "homepage": "http://github.com/webpack/webpack-dev-server",
   "main": "lib/Server.js",
   "bin": {
@@ -51,34 +47,5 @@
   ],
   "scripts": {
     "prepublish": "webpack ./client/live.js client/live.bundle.js --colors --config client/webpack.config.js -p && webpack ./client/index.js client/index.bundle.js --colors --config client/webpack.config.js -p"
-  },
-  "gitHead": "eae3a0c73fb847521b42ac2accae1c0906dd6023",
-  "bugs": {
-    "url": "https://github.com/webpack/webpack-dev-server/issues"
-  },
-  "_id": "webpack-dev-server@1.14.1",
-  "_shasum": "e51de228071258b0db6d55e0f5fee55eec6755de",
-  "_from": "webpack-dev-server@>=1.14.1 <2.0.0",
-  "_npmVersion": "2.10.1",
-  "_nodeVersion": "0.12.4",
-  "_npmUser": {
-    "name": "sokra",
-    "email": "tobias.koppers@googlemail.com"
-  },
-  "maintainers": [
-    {
-      "name": "jhnns",
-      "email": "mail@johannesewald.de"
-    },
-    {
-      "name": "sokra",
-      "email": "tobias.koppers@googlemail.com"
-    }
-  ],
-  "dist": {
-    "shasum": "e51de228071258b0db6d55e0f5fee55eec6755de",
-    "tarball": "https://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-1.14.1.tgz"
-  },
-  "directories": {},
-  "_resolved": "http://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-1.14.1.tgz"
+  }
 }
