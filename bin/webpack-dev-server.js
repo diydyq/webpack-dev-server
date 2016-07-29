@@ -60,8 +60,9 @@ var options = wpOpt.devServer || firstWpOpt.devServer || {};
 if(argv.host !== "localhost" || !options.host)
 	options.host = argv.host;
 
+// 传递port为数组时，使用最后一个
 if(argv.port !== 8080 || !options.port)
-	options.port = argv.port;
+	options.port = argv.port instanceof Array ? argv.port[argv.port.length - 1] : argv.port;
 
 if(!options.publicPath) {
 	options.publicPath = firstWpOpt.output && firstWpOpt.output.publicPath || "";
