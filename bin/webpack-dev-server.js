@@ -138,7 +138,7 @@ if(argv["compress"])
 	options.compress = true;
 
 // 获取远程调试地址
-if(argv['qa']){
+if(argv['qa'] || argv['ol']){
 	options.dest = getLocalAddr()[0];
 	function getLocalAddr() {
 		var networkInterfaces = require("os").networkInterfaces();
