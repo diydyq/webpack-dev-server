@@ -137,10 +137,27 @@ if(argv["history-api-fallback"])
 if(argv["compress"])
 	options.compress = true;
 
+// 获取远程调试地址
+if(argv['qa']){
+	options.dest = getLocalAddr()[0];
+	function getLocalAddr() {
+		var networkInterfaces = require("os").networkInterfaces();
+		var matches = [];
+		Object.keys(networkInterfaces).forEach(function (item) {
+			networkInterfaces[item].forEach(function (address) {
+				if (address.internal === false && address.family === "IPv4") {
+					matches.push(address.address);
+				}
+			});
+		});
+		return matches;
+	}
+}
+
 var protocol = options.https ? "https" : "http";
 
 if(options.inline) {
-	var devClient = [require.resolve("../client/") + "?" + protocol + "://" + options.host + ":" + options.port];
+	var devClient = [require.resolve("../client/") + "?" + protocol + "://" + (options.dest || options.host) + ":" + options.port];
 
 	if(options.hot)
 		devClient.push("webpack/hot/dev-server");
