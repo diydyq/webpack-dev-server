@@ -46,6 +46,8 @@ var optimist = require("optimist")
 
 	.describe("port", "The port").default("port", 8080)
 
+	.describe("proxyfile", "Proxy file to watch").default("proxyfile", "webpack.proxy.js")
+
 	.describe("host", "The hostname/ip address the server will bind to").default("host", "localhost");
 
 require("webpack/bin/config-optimist")(optimist);
@@ -137,6 +139,9 @@ if(argv["history-api-fallback"])
 
 if(argv["compress"])
 	options.compress = true;
+
+
+options.proxyfile = path.resolve(path.join(process.cwd(), argv["proxyfile"]));;
 
 // 获取远程调试地址
 if(argv['qa'] || argv['ol']){
